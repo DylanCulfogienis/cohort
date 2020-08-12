@@ -1,7 +1,7 @@
-import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
-import { VisFactoryProvider } from 'ui/vis/vis_factory';
-import { CATEGORY } from 'ui/vis/vis_category';
-import { Schemas, VisSchemasProvider } from 'ui/vis/editors/default/schemas';
+import { visualizations } from '../../../src/legacy/core_plugins/visualizations/public';
+
+import { visFactory } from 'ui/vis/vis_factory';
+import { Schemas } from 'ui/vis/editors/default/schemas';
 
 import { CohortVisualizationProvider } from './cohort_visualization';
 
@@ -9,15 +9,11 @@ import './cohort.less';
 import optionsTemplate from './options_template.html';
 
 export default function CohortTypeProvider(Private) {
-  const VisFactory = Private(VisFactoryProvider);
-  const _Schemas = Schemas || Private(VisSchemasProvider);
-
-  return VisFactory.createBaseVisualization({
+  return visFactory.createBaseVisualization({
     name: 'cohort',
     title: 'Cohort Analysis',
     icon: 'fa-user',
     description: 'Cohort analysis plugin',
-    category: CATEGORY.OTHER,
     visualization: Private(CohortVisualizationProvider),
     visConfig: {
       defaults: {
@@ -32,7 +28,7 @@ export default function CohortTypeProvider(Private) {
     responseHandler: 'none',
     editorConfig: {
       optionsTemplate: optionsTemplate,
-      schemas: new _Schemas([
+      schemas: new Schemas([
         {
           group: 'metrics',
           name: 'metric',
@@ -78,4 +74,4 @@ export default function CohortTypeProvider(Private) {
   });
 }
 
-VisTypesRegistryProvider.register(CohortTypeProvider);
+visualizations.types.registerVisualization(CohortTypeProvider);
